@@ -33,7 +33,7 @@ volunteers_list = []
 def main():
     return render_template("login.html")
 
-@app.route('/index.html')
+@app.route('/mainpage')
 def home():
     myname = "sparta"
     # 인천광역시(searchHopeArea1=6280000) 연수구(searchHopeArea2=3520000) 선택 / cPage는 페이지 관련 데이터 (ex: cPage=2는 2페이지)
@@ -82,7 +82,7 @@ def home():
     print("메인페이지에 있는 리스트 중에서 좋아요가 눌려있는 봉사번호: ")
     print(like_in_mainpage_list)
 
-    return render_template('index.html', name=myname, volunteers=volunteers_list, nos=like_in_mainpage_list)
+    return render_template('mainpage.html', name=myname, volunteers=volunteers_list, nos=like_in_mainpage_list)
 
 
 # 사이트에서 데이터 크롤링해오기
@@ -103,6 +103,8 @@ def get_crawling_data(li):
 
     # 마감일로부터 남은 기간
     before_deadline = li.select_one("a > div.close_dDay > div > span").text
+    print("before_deadline: ")
+    print(before_deadline)
 
     # 상세페이지에서 봉사시간 가져오기
     data1 = requests.get(href)
@@ -123,6 +125,7 @@ def get_crawling_data(li):
                       "recruit_period": recruit_period, "before_deadline": before_deadline, "completion": False}
     global volunteers_list  # 전역변수로 사용
     volunteers_list.append(volunteer_dict)
+    volunteers_list = sorted(volunteers_list, key=(lambda x: int(x['before_deadline'])))
 
 
 # 딕셔너리 여러개가 담겨있는 리스트를 키값을 제외한 volunteer_no 값만 가져와 리스트로 변환하는 함수
@@ -133,7 +136,7 @@ def get_volunteer_no_list(list):
     return no_list
 
 # 좋아요 누르기
-@app.route('/like', methods=['POST'])
+@app.route('/mainpage/like', methods=['POST'])
 def like():
     volunteer_no = request.form["volunteer_no"]
     subject = request.form["subject"]
@@ -152,7 +155,7 @@ def like():
     return jsonify({'msg': "좋아요를 눌렀습니다!"})
 
 # 좋아요 취소
-@app.route('/cancel', methods=['POST'])
+@app.route('/mainpage/cancel', methods=['POST'])
 def cancel_like():
     volunteer_no = request.form["volunteer_no"]
     db.volunteer.delete_one({'volunteer_no': volunteer_no})
@@ -163,9 +166,23 @@ def cancel_like():
 
 @app.route('/mypage')
 def mypage():
-    myname = "sparta"
     rows = list(db.volunteer.find({}, {'_id': False}))
-    return render_template('mypage.html', name=myname, rows=rows)
+    hour = 0
+    min = 0
+    for row in rows:
+        day = row['recruit_period'].split()[2].split('-')
+        recruit_day = datetime(int(day[0]), int(day[1]), int(day[2]))
+        deadline = datetime.now() - recruit_day
+        row['deadline'] = -(int(str(deadline).split()[0]))
+        if row['completion'] == 'true':
+            hour += int(row['hour'].split(':')[0])
+            min += int(row['hour'].split(':')[1])
+    mintohour = min//60
+    hour += mintohour
+    min = min%60
+
+    rows = sorted(rows, key=(lambda x: x['deadline']))
+    return render_template('mypage.html', rows=rows, hour=hour, min=min)
 
 
 @app.route('/mypage', methods=['GET'])
