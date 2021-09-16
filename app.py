@@ -103,8 +103,6 @@ def get_crawling_data(li):
 
     # 마감일로부터 남은 기간
     before_deadline = li.select_one("a > div.close_dDay > div > span").text
-    print("before_deadline: ")
-    print(before_deadline)
 
     # 상세페이지에서 봉사시간 가져오기
     data1 = requests.get(href)
