@@ -28,6 +28,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+
+
     <style>
         body {
             background-color: #efebe9;
@@ -197,7 +202,21 @@
             height: 250px;
             background-color: darkgray;
         }
+
+        body > header > div {
+            width: 250px;
+            margin-left: 80%;
+        }
+
+        body > header > div > button.button.is-success.position {
+            width: 98px;
+        }
+
+        body > header > div > button.button.is-warning {
+            color: white;
+        }
     </style>
+
     <script>
         $(document).ready(function () {
         });
@@ -242,14 +261,33 @@
                 }
             })
         }
+
+        function Open_mypage() {
+            window.location.href = '/mypage'
+        }
+
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/"
+        }
     </script>
+
 </head>
 
 <body>
 <header class="main-header">
+    <div class="button-box">
+        <button class="button is-success position" onclick="Open_mypage()">
+            마이페이지
+        </button>
+        <button class="button is-warning" onclick="sign_out()">로그아웃</button>
+    </div>
     <img class="logo_img" src="../static/logo.png" alt="로고">
-    <a href="/mypage">마이페이지</a>
+
+
 </header>
+
 <section class="mainpage">
     <h1 class="mainpage-title">
         연수구 봉사참여
@@ -273,17 +311,20 @@
                     {% else %}
                         <i onclick="cancel_like({{ id }})" class="fas fa-heart red-heart"></i>
                     {% endif %}
-                    <p id="{{ id }}-deadline" class="card-deadline">마감 <span class="font-red">{{ deadline }}</span>일전</p>
+                    <p id="{{ id }}-deadline" class="card-deadline">마감 <span class="font-red">{{ deadline }}</span>일전
+                    </p>
                     <input type="hidden" class="card-id blind" value="{{ id }}">
-                    <input id="{{ id }}-hour"type="hidden" class="card-id blind" value="{{ hour }}">
-                    <input id="{{ id }}-href"type="hidden" class="card-id blind" value="{{ href }}">
+                    <input id="{{ id }}-hour" type="hidden" class="card-id blind" value="{{ hour }}">
+                    <input id="{{ id }}-href" type="hidden" class="card-id blind" value="{{ href }}">
                 </div>
             {% endfor %}
         </div>
     </article>
 </section>
+
 <footer class="page-info">
 </footer>
+
 </body>
 
 </html>

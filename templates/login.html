@@ -216,6 +216,14 @@
             margin: auto;
         }
 
+        body > div:nth-child(4) > div.positions > header > div > button.button.is-warning {
+            display: block;
+            color: white;
+            width: 98px;
+            margin: auto;
+
+
+        }
 
     </style>
 
@@ -240,9 +248,7 @@
 
                 <button class="button is-success position" onclick="Open_signup()">회원가입</button>
                 <hr>
-                <button class="button position is-warning is-light" onclick='$("#login-modal").addClass("is-active")'>
-                    로그인하기
-                </button>
+                <button class="button is-warning" onclick='$("#login-modal").addClass("is-active")'>로그인</button>
             </div>
         </header>
     </div>
