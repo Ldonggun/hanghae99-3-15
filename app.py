@@ -29,9 +29,11 @@ app = Flask(__name__)
 # 전역변수
 volunteers_list = []
 
+
 @app.route('/')
 def main():
     return render_template("login.html")
+
 
 @app.route('/mainpage')
 def home():
@@ -135,6 +137,7 @@ def get_volunteer_no_list(list):
         no_list.append(dict['volunteer_no'])
     return no_list
 
+
 # 좋아요 누르기
 @app.route('/mainpage/like', methods=['POST'])
 def like():
@@ -153,6 +156,7 @@ def like():
     }
     db.volunteer.insert_one(doc)
     return jsonify({'msg': "좋아요를 눌렀습니다!"})
+
 
 # 좋아요 취소
 @app.route('/mainpage/cancel', methods=['POST'])
@@ -177,9 +181,9 @@ def mypage():
         if row['completion'] == 'true':
             hour += int(row['hour'].split(':')[0])
             min += int(row['hour'].split(':')[1])
-    mintohour = min//60
+    mintohour = min // 60
     hour += mintohour
-    min = min%60
+    min = min % 60
 
     rows = sorted(rows, key=(lambda x: x['deadline']))
     return render_template('mypage.html', rows=rows, hour=hour, min=min)
@@ -204,20 +208,22 @@ def done_post():
     db.volunteer.update_one({'volunteer_no': id_receive}, {'$set': {'completion': 'true'}})
     return jsonify({'msg': '봉사활동 완료됨!'})
 
+
 # [회원가입 API]
 # id, pw, 받아서, mongoDB에 저장합니다.
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
-    #받은 PW 를 암호화
+    # 받은 PW 를 암호화
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     doc = {
-        "username": username_receive,                               # 아이디
-        "password": password_hash,                                  # 비밀번호
+        "username": username_receive,  # 아이디
+        "password": password_hash,  # 비밀번호
     }
     db.login_info.insert_one(doc)
     return jsonify({'result': 'success'})
+
 
 # [아이디 중복확인 API]
 @app.route('/sign_up/check_dup', methods=['POST'])
@@ -226,10 +232,10 @@ def check_dup():
     exists = bool(db.login_info.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
+
 # [로그인 API]
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
-
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
 
@@ -238,8 +244,8 @@ def sign_in():
 
     if result is not None:
         payload = {
-         'id': username_receive,
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+            'id': username_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
