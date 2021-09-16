@@ -164,7 +164,7 @@
                     if (response['result'] == 'success') {
                         $.cookie('mytoken', response['token'], {path: '/'});
                         $("#sign-up-modal").removeClass("is-active")
-                        window.location.replace("/index.html")
+                        window.location.replace("/mainpage")
                     } else {
                         alert(response['msg'])
                     }
