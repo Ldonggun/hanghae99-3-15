@@ -180,6 +180,13 @@
 
         }
 
+        function enterkey_login() {
+            if (window.event.keyCode == 13) {
+                sign_in()
+            }
+        }
+
+
         function Open_signup() {
             $("#sign-up-modal").addClass("is-active")
         }
@@ -389,7 +396,7 @@
                                         <p id="help-id-login" class="help is-danger"></p>
                                         <div class="field ">
                                             <div class="control has-icons-left">
-                                                <input id="login-input-password" class="input" type="password"
+                                                <input id="login-input-password" class="input" type="password" onkeyup="enterkey_login()"
                                                        placeholder="비밀번호">
                                                 <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
                                             </div>
@@ -398,7 +405,7 @@
                                     </div>
                                     <div id="div-sign-in-or-up" class="has-text-centered">
                                         <nav class="level">
-                                            <button class="level-item button is-sparta" onclick="sign_in()">
+                                            <button id="login-btn" class="level-item button is-sparta" onclick="sign_in()">
                                                 로그인
                                             </button>
                                         </nav>
