@@ -187,6 +187,7 @@
             background-color: darkgray;
         }
 
+
         body > header > div {
             width: 250px;
             margin-left: 80%;
@@ -197,6 +198,80 @@
             width: 106px;
         }
 
+        .modal {
+            display: none;
+            margin: auto;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 250px;
+            height: 150px;
+            background-color: #fff;
+            border: 1px solid #b1aeae8a;
+            border-radius: 5px;
+            font-family: 'Noto Sans KR', sans-serif;
+            z-index: 6;
+        }
+
+        .modal2 {
+            display: none;
+            margin: auto;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 65%;
+            height: 80%;
+            background-color: #fff;
+            border: 1px solid #b1aeae8a;
+            border-radius: 5px;
+            font-family: 'Noto Sans KR', sans-serif;
+            z-index: 6;
+        }
+
+        .modal-iframe {
+            width: 95%;
+            height: 85%;
+            margin: auto;
+        }
+
+        .modal-btn-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            height: 40px;
+            width: 100%;
+        }
+
+        .modal-btn {
+            text-align: center;
+            flex-grow: 1;
+            flex-basis: 45%;
+            border: 1px solid rgb(255, 208, 0);
+            background-color: rgb(253, 219, 66);
+            line-height: 38px;
+            font-size: 17px;
+        }
+
+        .modal-btn:hover {
+            background-color: rgb(255, 196, 0);
+            cursor: pointer;
+        }
+
+        .modal-btn-link,
+        .modal-btn-link:hover {
+            display: block;
+            text-decoration: none;
+            color: #212529;
+        }
+
+        .modal-background {
+            display: none;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: gray;
+            opacity: 0.5;
+            z-index: 5;
+        }
     </style>
 
     <script>
@@ -255,6 +330,22 @@
             alert('로그아웃!')
             window.location.href = "/"
         }
+
+        function cardDetail(id) {
+            $('#modal2').css("display", "flex");
+            $('#modalback').css("display", "block");
+            let target = $(`#${ id }-href`).val();
+            console.log(target);
+            $('.modal-iframe').attr('src', target);
+            $('#btn-url').attr('href', target);
+
+        }
+
+        function cardHide() {
+            $('#modalback').hide();
+            $('.modal').hide();
+            $('.modal-msg').text('');
+        }
     </script>
 
 </head>
@@ -284,7 +375,8 @@
                 {% set url = volunteer.href %}
                 <div class="card">
                     <div class="card-body">
-                        <h5 id="{{ id }}-title" class="card-title">{{ title }}</h5>
+                        <!-- <h5 id="{{ id }}-title" class="card-title">{{ title }}</h5>-->
+                        <h5 id="{{ id }}-title" onclick="cardDetail({{ id }})"  class="card-title">{{ title }}</h5>
                         <p class="card-period">모집기간: <span id="{{ id }}-period">{{ period }}</span></p>
                     </div>
                     {% if id not in nos %}
@@ -301,9 +393,22 @@
             {% endfor %}
         </div>
     </article>
+    <div class="modal modal2" id="modal2">
+        <iframe class="modal-iframe"></iframe>
+        <div class="modal-btn-container">
+            <a id="btn-url" class="modal-btn modal-btn-link" target="_blank">
+                <span>사이트로 이동하기</span>
+            </a>
+            <div onclick="cardHide()" id="btn-no" class="modal-btn">
+                <span>창닫기</span>
+            </div>
+        </div>
+    </div>
 </section>
 <footer class="page-info">
 </footer>
+<div onclick="cardHide()" id="modalback" class="modal-background">
+</div>
 </body>
 
 </html>
