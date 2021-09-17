@@ -18,6 +18,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+    <!--bulma link-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- -->
     <title>연수구 가치봉사 마이페이지</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,6 +27,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
     <style>
         body {
             background-color: #efebe9;
@@ -280,7 +284,22 @@
         .iframe-container {
 
         }
+
+        body > header > div {
+            width: 250px;
+            margin-left: 80%;
+        }
+
+        body > header > div > button.button.is-success.position {
+            width: 98px;
+        }
+
+        body > header > div > button.button.is-warning {
+            color: white;
+        }
+
     </style>
+
     <script>
         function cardDelete(event) {
             let modal = $('.modal');
@@ -339,12 +358,30 @@
             $('.modal').hide();
         }
 
+        function Open_mainpage() {
+            window.location.href = '/mainpage';
+
+        }
+
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/"
+        }
     </script>
+
 </head>
 <body>
 <header class="main-header">
+    <div class="button-box">
+        <button class="button is-success position" onclick="Open_mainpage()">
+            메인페이지
+        </button>
+        <button class="button is-warning" onclick="sign_out()">로그아웃</button>
+    </div>
     <img class="logo_img" src="../static/logo.png" alt="로고">
 </header>
+
 <section class="mypage">
     <h1 class="mypage-title">
         마이페이지
@@ -414,8 +451,10 @@
         </div>
     </div>
 </section>
+
 <footer class="page-info">
 </footer>
+
 <div id="modalback" class="modal-background">
 </div>
 </body>
