@@ -3,8 +3,12 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3, user-scalable=yes">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -24,9 +28,12 @@
     <title>연수구 가치봉사</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic&display=swap" rel="stylesheet">
+
+
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
@@ -52,7 +59,7 @@
                 return;
             }
             if (!is_nickname(username)) {
-                $("#help-id").text("아이디의 형식을 확인해주세요. 영문과 숫자, 일부 특수문자(._-) 사용 가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
+                $("#help-id").text("영문과 숫자,일부 특수문자(._-)만 사용가능. 2-10자 길이").removeClass("is-safe").addClass("is-danger")
                 $("#input-username").focus()
                 return;
             }
@@ -99,7 +106,7 @@
                 $("#input-password").focus()
                 return;
             } else if (!is_password(password)) {
-                $("#help-password").text("비밀번호의 형식을 확인해주세요. 영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 8-20자").removeClass("is-safe").addClass("is-danger")
+                $("#help-password").text("영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능. 8-20자").removeClass("is-safe").addClass("is-danger")
                 $("#input-password").focus()
                 return
             } else {
@@ -163,10 +170,10 @@
                 success: function (response) {
                     if (response['result'] == 'success') {
                         $.cookie('mytoken', response['token'], {path: '/'});
-                        $("#sign-up-modal").removeClass("is-active");
-                        window.location.replace("/mainpage");
+                        $("#sign-up-modal").removeClass("is-active")
+                        window.location.replace("/mainpage")
                     } else {
-                        alert(response['msg']);
+                        alert(response['msg'])
                     }
                 }
             });
@@ -180,180 +187,234 @@
     </script>
 
     <style>
-        .top-area {
-            background-color: #efebe9;
-            padding-top: 200px;
-
+        * {
+            margin: 0;
+            padding: 0;
         }
 
-        .logo_img {
-        {#background-color: black;#} height: 300px;
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .page-wrap {
+            margin: 0;
+            height: 800px;
+            /* border: 2px solid red; */
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .page-header {
+            height: 400px;
+            width: 700px;
+            /* border: 2px solid blue; */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .page-footer {
+            width: 100%;
+            height: 200px;
+            background-color: gray;
+        }
+
+        .img-main {
             width: 500px;
-            display: block;
-            margin: auto;
+            height: 600px;
 
         }
 
-        .middle-position {
-            padding-top: 80px;
+        .img-hand {
+            width: 70px;
         }
 
-        .bottom-position {
-        {#background-color: red;#} padding-top: 30px;
+        .btn-container {
+            width: 400px;
+            height: 50px;
+            /* background-color: red; */
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+
         }
 
-        .positions {
-        {#background-color: #ffd54f;#} padding-top: 30px;
-
+        .btn-login,
+        .btn-sign-in {
+            background-color: #fc6960;
+            color: white;
+            width: 140px;
+            height: 35px;
+            border-radius: 15px;
+            border: none;
+            font-size: 16px;
         }
 
-        {#.main-header {#}
-        {#    display: block;#}
-        {#    margin: auto;#}
-
-        .position {
-            display: block;
-            margin: auto;
+        .page-title {
+            font-family: 'Jua', sans-serif;
+            font-size: 75px;
         }
 
+        .page-desc {
+            /* border: 1px solid darkcyan; */
+            font-size: 18px;
+            line-height: 30px;
+            font-family: 'Nanum Gothic', sans-serif;
+            margin-bottom: 50px;
+        }
+
+        .font-yellow {
+            color: #f8d857;
+        }
+
+        .font-green {
+            color: #79bb5c;
+        }
 
     </style>
-
 </head>
-
 <body>
-
-<div class="top-area">
-</div>
-
-<div class="middle-position">
-    <img class="logo_img" src="../static/logo.png" alt="로고">
-</div>
-
-<div class="bottom-position">
-</div>
-
-<div>
-    <div class="positions">
-        <header class="main-header">
-            <div class="login-sign-box">
-                <button class="button is-success position" onclick="Open_signup()">회원가입</button>
-                <hr>
-                <button class="button position is-warning is-light" onclick='$("#login-modal").addClass("is-active")'>
-                    로그인하기
-                </button>
-            </div>
-        </header>
-    </div>
-
-    <div class="modal" id="sign-up-modal">
-        <div class="modal-background" onclick='$("#sign-up-modal").removeClass("is-active")'></div>
-        <div class="modal-content"></div>
-        <div>
-            <button class="modal-close is-large" aria-label="close"
-                    onclick='$("#sign-up-modal").removeClass("is-active")'></button>
-        </div>
-
-        <section class="section">
-            <div class="container">
-                <div class="box" style="max-width: 480px;margin:auto">
-                    <article class="media">
-                        <div class="media-content">
-                            <div class="content">
-
-                                <div class="field has-addons">
-                                    <div class="control has-icons-left" style="width:100%">
-                                        <input id="input-username" class="input" type="text" placeholder="아이디">
-                                        <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
-                                    </div>
-                                    <div id="btn-check-dup" class="control">
-                                        <button class="button is-sparta" onclick="check_dup()">중복확인</button>
-                                    </div>
-
-                                </div>
-
-
-                                <p id="help-id" class="help">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
-                                <div>
-                                    <div class="control">
-                                        <input id="input-password" class="input" type="password" placeholder="비밀번호">
-                                    </div>
-                                    <p id="help-password" class="help">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요.<br>
-                                        특수문자(!@#$%^&*) 사용 가능</p>
-                                </div>
-                                <div class="field">
-                                    <div class="control" style="width:100%">
-                                        <input id="input-password2" class="input" type="password"
-                                               placeholder="비밀번호 재입력">
-                                    </div>
-                                    <p id="help-password2" class="help">비밀번호를 다시 한 번 입력해주세요.</p>
-                                </div>
-
-                                <div class="field">
-                                    <button class="button" onclick="sign_up()">
-                                        회원가입
-                                    </button>
-                                    <button class="button"
-                                            onclick='$("#sign-up-modal").removeClass("is-active")'>
-                                        취소
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <div class="modal" id="login-modal">
-        <div class="modal-background" onclick='$("#login-modal").removeClass("is-active")'></div>
-
-        <div class="modal-content">
-            <div>
-                <button class="modal-close is-large" aria-label="close"
-                        onclick='$("#login-modal").removeClass("is-active")'></button>
-            </div>
-            <section class="section">
-                <div class="container">
-                    <div class="box" style="max-width: 480px;margin:auto">
-                        <article class="media">
-                            <div class="media-content">
-                                <div class="content">
-                                    <div class="field has-addons">
-                                        <div class="control has-icons-left" style="width:100%">
-                                            <input id="login-input-username" class="input" type="text"
-                                                   placeholder="아이디">
-                                            <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
-                                        </div>
-                                    </div>
-                                    <p id="help-id-login" class="help is-danger"></p>
-                                    <div class="field ">
-                                        <div class="control has-icons-left">
-                                            <input id="login-input-password" class="input" type="password"
-                                                   placeholder="비밀번호">
-                                            <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
-                                        </div>
-                                    </div>
-                                    <p id="help-password-login" class="help is-danger"></p>
-                                </div>
-                                <div id="div-sign-in-or-up" class="has-text-centered">
-                                    <nav class="level">
-                                        <button class="level-item button is-sparta" onclick="sign_in()">
-                                            로그인
-                                        </button>
-                                    </nav>
-                                </div>
-                            </div>
-                        </article>
+        <div class="container">
+            <section class="page-wrap">
+                <header class="page-header">
+                    <h1 class="page-title">
+                        <span class="font-yellow">연수구</span> <span class="font-green">가치봉사</span>
+                        <img class="img-hand" src="../static/main-img2.jpg" alt="손하트이미지">
+                    </h1>
+                    <p class="page-desc">
+                        현재 모집중인 인천 연수구의 봉사활동 리스트와 상세페이지를 제공합니다.<br>
+                        나만의 PAGE 관리도 가능하니 관심있는 봉사활동은 스크랩하고 총 봉사시간도 체크하세요.
+                    </p>
+                    <div class="btn-container">
+                        <button class="btn-login" onclick='$("#login-modal").addClass("is-active")'>로그인</button>
+                        <button class="btn-sign-in" onclick="Open_signup()">회원가입</button>
                     </div>
-                </div>
+                </header>
+                <img class="img-main" src="../static/main-img1.jpg" alt="메인이미지">
             </section>
         </div>
 
-    </div>
-</div>
-</body>
 
+        <div class="middle-position">
+            <div>
+        {#        로그인 회원가입 모달창#}
+                <div class="modal" id="sign-up-modal">
+                    <div class="modal-background" onclick='$("#sign-up-modal").removeClass("is-active")'></div>
+                    <div class="modal-content"></div>
+                    <div>
+                        <button class="modal-close is-large" aria-label="close"
+                                onclick='$("#sign-up-modal").removeClass("is-active")'></button>
+                    </div>
+
+                    <section class="section">
+                        <div class="container">
+                            <div class="box" style="max-width: 480px;margin:auto">
+                                <article class="media">
+                                    <div class="media-content">
+                                        <div class="content">
+                                            <div class="field has-addons">
+                                                <div class="control has-icons-left" style="width:100%">
+                                                    <input id="input-username" class="input" type="text" placeholder="아이디">
+                                                    <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                                                </div>
+                                                <div id="btn-check-dup" class="control">
+                                                    <button class="button is-sparta" onclick="check_dup()">중복확인</button>
+                                                </div>
+                                            </div>
+                                            <p id="help-id" class="help">아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력 가능합니다.</p>
+                                            <div>
+                                                <div class="control">
+                                                    <input id="input-password" class="input" type="password" placeholder="비밀번호">
+                                                </div>
+                                                <p id="help-password" class="help">영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요.<br>
+                                                    특수문자(!@#$%^&*) 사용 가능</p>
+                                            </div>
+                                            <div class="field">
+                                                <div class="control" style="width:100%">
+                                                    <input id="input-password2" class="input" type="password"
+                                                           placeholder="비밀번호 재입력">
+                                                </div>
+                                                <p id="help-password2" class="help">비밀번호를 다시 한 번 입력해주세요.</p>
+                                            </div>
+
+                                            <div class="field">
+                                                <button class="button" onclick="sign_up()">
+                                                    회원가입
+                                                </button>
+                                                <button class="button"
+                                                        onclick='$("#sign-up-modal").removeClass("is-active")'>
+                                                    취소
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="modal" id="login-modal">
+                    <div class="modal-background" onclick='$("#login-modal").removeClass("is-active")'></div>
+                    <div class="modal-content" style="max-width: 480px;margin:auto">
+                        <div class="box">
+                            <article class="container">
+                                <div class="media-content">
+                                    <div class="field">
+                                        <div class="field has-addons">
+                                            <div class="control has-icons-left" style="width:100%">
+                                                <input id="login-input-username" class="input" type="text"
+                                                       placeholder="아이디">
+                                                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                                            </div>
+                                        </div>
+                                        <p id="help-id-login" class="help is-danger"></p>
+                                        <div class="field ">
+                                            <div class="control has-icons-left">
+                                                <input id="login-input-password" class="input" type="password"
+                                                       placeholder="비밀번호">
+                                                <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                                            </div>
+                                        </div>
+                                        <p id="help-password-login" class="help is-danger"></p>
+                                    </div>
+                                    <div id="div-sign-in-or-up" class="has-text-centered">
+                                        <nav class="level">
+                                            <button class="level-item button is-sparta" onclick="sign_in()">
+                                                로그인
+                                            </button>
+                                        </nav>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="modal-close is-large" aria-label="close"
+                        onclick='$("#login-modal").removeClass("is-active")'></button>
+
+            </div>
+
+        </div>
+
+        <footer class="page-footer">
+        </footer>
+</body>
 </html>
