@@ -18,9 +18,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-    <!--bulma link-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <!-- -->
+
     <title>연수구 가치봉사 마이페이지</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,7 +111,8 @@
             background-color: #f5f5f5;
             font-family: 'Noto Sans KR', sans-serif;
             padding-top: 10px;
-            transition: transform 120ms ease-in
+            transition: transform 120ms ease-in;
+            z-index: 1;
         }
 
         #card-box-completed > .card {
@@ -199,6 +198,7 @@
             text-align: center;
             color: red;
             transition: transform 100ms ease-in;
+            z-index: 2;
         }
 
         .fa-heart:hover {
@@ -215,6 +215,7 @@
             border: none;
             background-color: #ffd54f;
             border-radius: 0px 0px 10px 10px;
+            z-index: 2;
         }
 
         .btn-done:hover {
@@ -239,7 +240,26 @@
             border: 1px solid #b1aeae8a;
             border-radius: 5px;
             font-family: 'Noto Sans KR', sans-serif;
-            z-index: 2;
+            z-index: 6;
+        }
+        .modal2 {
+            display: none;
+            margin: auto;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 65%;
+            height: 80%;
+            background-color: #fff;
+            border: 1px solid #b1aeae8a;
+            border-radius: 5px;
+            font-family: 'Noto Sans KR', sans-serif;
+            z-index: 6;
+        }
+
+        .modal-iframe {
+            width: 95%;
+            height: 85%;
+            margin: auto;
         }
 
         .modal-msg {
@@ -278,11 +298,7 @@
             height: 100%;
             background-color: gray;
             opacity: 0.5;
-            z-index: 1;
-        }
-
-        .iframe-container {
-
+            z-index: 5;
         }
 
         body > header > div {
@@ -302,7 +318,7 @@
 
     <script>
         function cardDelete(event) {
-            let modal = $('.modal');
+            let modal = $('#modal1');
             let modalback = $('#modalback');
             modalback.css("display", "block");
             modal.css("display", "flex");
@@ -312,8 +328,18 @@
             $('.modal').append(temp_html);
         }
 
+        function cardDetail(event) {
+            let modal = $('#modal2');
+            let modalback = $('#modalback');
+            modal.css("display", "flex");
+            modalback.css("display", "block");
+            let target = $(event).parent()[0].parentElement.innerText.split("\n")[8];
+            $('.modal-iframe').attr('src', target);
+            console.log("url: ", target);
+        }
+
         function cardDone(event) {
-            let modal = $('.modal');
+            let modal = $('#modal1');
             let modalback = $('#modalback');
             modalback.css("display", "block");
             modal.css("display", "flex");
@@ -351,11 +377,13 @@
                 $('#modalback').hide();
                 window.location.reload();
             }
+            $('.modal-msg').text('');
         }
 
         function cardHide() {
             $('#modalback').hide();
             $('.modal').hide();
+            $('.modal-msg').text('');
         }
 
         function Open_mainpage() {
@@ -399,13 +427,13 @@
                     {% set url = row.href %}
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">{{ title }}</h5>
+                            <h5 onclick="cardDetail(this)" class="card-title">{{ title }}</h5>
                             <p class="card-period">모집기간: {{ period }}</p>
                         </div>
                         <i onclick="cardDelete(this)" id="heart" class="fas fa-heart"></i>
                         <p class="card-deadline">마감 <span class="font-red">{{ deadline }}</span>일전</p>
                         <p class="card-id blind">{{ id }}</p>
-                        <p class="card-url blind">{{ id }}</p>
+                        <p class="card-url blind">{{ url }}</p>
                         <button onclick="cardDone(this)" id="completion" class="btn-done">완료하기</button>
                     </div>
                 {% endif %}
@@ -425,21 +453,24 @@
                     {% set id = row.volunteer_no %}
                     {% set completion = row.completion %}
                     {% set hour = row.hour %}
+                    {% set url = row.href %}
                     <div class="card card-completed">
                         <div class="card-body">
-                            <h5 class="card-title">{{ title }}</h5>
+                            <h5 onclick="cardDetail(this)" class="card-title">{{ title }}</h5>
                             <div class="card-desc">
                                 <p class="card-period">모집기간: {{ period }}</p>
-                                <p class="card-hour">봉사시간: {{ hour }}시간</p>
+                                <p class="card-hour">봉사시간: {{ hour }}</p>
                             </div>
                         </div>
                         <p class="card-id blind">{{ id }}</p>
+                        <p class="card-id blind">{{ url }}</p>
                     </div>
                 {% endif %}
             {% endfor %}
         </div>
     </article>
-    <div class="modal">
+
+    <div class="modal" id="modal1">
         <p class="modal-msg"></p>
         <div class="modal-btn-container">
             <div onclick="cardAnswerYes(this)" id="btn-yes" class="modal-btn">
@@ -447,6 +478,15 @@
             </div>
             <div onclick="cardHide()" id="btn-no" class="modal-btn">
                 <span>아니요</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal2" id="modal2">
+        <iframe class="modal-iframe"></iframe>
+        <div class="modal-btn-container">
+            <div onclick="cardHide()" id="btn-no" class="modal-btn">
+                <span>창닫기</span>
             </div>
         </div>
     </div>

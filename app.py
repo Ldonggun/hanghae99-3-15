@@ -35,6 +35,7 @@ volunteers_list = []
 only_volunteer_no_list_crawling = []
 
 
+
 @app.route('/')
 def main():
     return render_template("login.html")
@@ -124,6 +125,8 @@ def get_crawling_data(li):
 
     # 마감일로부터 남은 기간
     before_deadline = li.select_one("a > div.close_dDay > div > span").text
+    print("before_deadline: ")
+    print(before_deadline)
 
     # 상세페이지에서 봉사시간 가져오기
     data1 = requests.get(href)
@@ -144,6 +147,7 @@ def get_crawling_data(li):
                       "recruit_period": recruit_period, "before_deadline": before_deadline, "completion": "false"}
     global volunteers_list  # 전역변수로 사용
     volunteers_list.append(volunteer_dict)
+    volunteers_list = sorted(volunteers_list, key=(lambda x: int(x['before_deadline'])))
 
     # 마감일이 임박한 순으로 정렬
     volunteers_list = sorted(volunteers_list, key=(lambda x: int(x['before_deadline'])))

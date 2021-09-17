@@ -286,13 +286,11 @@
                         <h5 id="{{ id }}-title" class="card-title">{{ title }}</h5>
                         <p class="card-period">모집기간: <span id="{{ id }}-period">{{ period }}</span></p>
                     </div>
-                    {#                #}
                     {% if id not in nos %}
                         <i id="{{ id }}-heart" class="fas fa-heart gray-heart" onclick="like({{ id }})"></i>
                     {% else %}
                         <i id="{{ id }}-heart" class="fas fa-heart red-heart" onclick="cancel_like({{ id }})"></i>
                     {% endif %}
-                    {#                #}
                     <p id="{{ id }}-deadline" class="card-deadline">마감 <span class="font-red">{{ deadline }}</span>일전
                     </p>
                     <input type="hidden" class="card-id blind" value="{{ id }}">
