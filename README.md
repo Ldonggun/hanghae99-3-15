@@ -10,6 +10,9 @@
  >+ 배나영-메인페이지
  >+ 김세연-마이페이지
  >+ 박재현-로그인
+<br>
+<br>
+<br>
 
 
 
@@ -17,29 +20,35 @@
 <img width="80%" src="https://user-images.githubusercontent.com/89460880/133869354-9a9a1a41-f78f-4c8a-9773-9a60b9281467.gif"/>
 
 웹사이트 링크 : http://donggunlim.shop/
+<br>
+<br>
+<br>
 
 
 
 ## 3. 기술 스택
-Back-end
-Python 3
-Flask 2.0.1
-MongoDB 4.4
-Pyjwt 1.7.1
-Jinja2 3.0.1
-Front-end
-JQuery 3.5.1
-Bulma 0.9.2
-deploy
-AWS EC2 (Ubuntu 18.04 LTS)
+### Back-end
+>+ Python 3
+>+ Flask 2.0.1
+>+ MongoDB 4.4
+>+ Pyjwt 1.7.1
+>+ Jinja2 3.0.1
+### Front-end
+>+ JQuery 3.5.1
+>+ Bulma 0.9.2
+### deploy
+>+ AWS EC2 (Ubuntu 18.04 LTS)
+<br>
+<br>
+<br>
 
 
 
 ## 4. 핵심기능
-로그인, 회원가입
-JWT를 이용하여 로그인과 회원가입을 구현하였습니다.
-아이디와 닉네임의 중복확인이 가능합니다.
-봉사활동 list 실시간 크롤링
-모집/마감 기한, 봉사시간 등의 데이터를 실시간으로 받아와 리스트 update합니다.
-마이페이지
-스크랩한 봉사활동 관리 및 봉사시간을 확인 할 수있습니다.
+#### 로그인, 회원가입
+>+ JWT를 이용하여 로그인과 회원가입을 구현하였습니다.
+>+ 아이디와 닉네임의 중복확인이 가능합니다.
+#### 봉사활동 list 실시간 크롤링
+>+ 모집/마감 기한, 봉사시간 등의 데이터를 실시간으로 받아와 리스트 update합니다.
+#### 마이페이지
+>+ 스크랩한 봉사활동 관리 및 봉사시간을 확인 할 수있습니다.
