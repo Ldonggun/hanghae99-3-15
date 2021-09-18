@@ -251,22 +251,35 @@ def mypage():
             # 삭제 후 다시 가져오기
             rows = list(db.volunteer.find({'user_id': user_id}, {'_id': False}))
     #######################################################################
+    deadlines = []
     hour = 0
     min = 0
     for row in rows:
         day = row['recruit_period'].split()[2].split('-')
         recruit_day = datetime(int(day[0]), int(day[1]), int(day[2]))
         deadline = datetime.now() - recruit_day
-        row['deadline'] = -(int(str(deadline).split(':')[0].split()[0]))
+        print("deadline은", datetime.now(), '-', recruit_day, '=', deadline)
+        if str(deadline).find('days', 0) == -1:
+            row['deadline'] = 0
+            deadlines.append(row['volunteer_no'])
+        else:
+            row['deadline'] = -(int(str(deadline).split(':')[0].split()[0]))
+
+        row_hour = row['hour'].split(':')[0]
+        row_min = row['hour'].split(':')[1]
         if row['completion'] == 'true':
-            hour += int(row['hour'].split(':')[0])
-            min += int(row['hour'].split(':')[1])
+            hour += int(row_hour)
+            min += int(row_min)
+        if row_min == '00':
+            row['hour'] = row_hour + '시간'
+        else:
+            row['hour'] = row_hour + '시간 ' + row_min + '분'
     mintohour = min // 60
     hour += mintohour
     min = min % 60
 
     rows = sorted(rows, key=(lambda x: x['deadline']))
-    return render_template('mypage.html', rows=rows, hour=hour, min=min)
+    return render_template('mypage.html', rows=rows, hour=hour, min=min, deadlines=deadlines)
 
 
 @app.route('/mypage', methods=['GET'])

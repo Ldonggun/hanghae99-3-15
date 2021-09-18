@@ -4,7 +4,11 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+    <meta property="og:title" content="연수구 가치봉사 - 행복을 나누며"/>
+    <meta property="og:description" content="항해99 3기 15조 1주차 미니프로젝트"/>
+    <meta property="og:image" content="{{ url_for('static', filename='ogimg.png') }}"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -25,8 +29,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-
     <style>
         body {
             background-color: #efebe9;
@@ -122,7 +124,6 @@
 
         .card:hover {
             transform: translate(0, -10px);
-            cursor: pointer;
             background-color: white;
             box-shadow: rgba(0, 0, 0, 0.13) 0px 10px 10px, rgba(0, 0, 0, 0.18) 0px 6px 6px;
         }
@@ -132,6 +133,7 @@
             font-size: 20px;
             color: #373737;
             font-weight: bold;
+            cursor: pointer;
         }
 
         .card-desc {
@@ -199,11 +201,11 @@
             color: red;
             transition: transform 100ms ease-in;
             z-index: 2;
+            cursor: pointer;
         }
 
         .fa-heart:hover {
             transform: scale(1.15);
-            cursor: pointer;
         }
 
         .btn-done {
@@ -216,10 +218,10 @@
             background-color: #ffd54f;
             border-radius: 0px 0px 10px 10px;
             z-index: 2;
+            cursor: pointer;
         }
 
         .btn-done:hover {
-            cursor: pointer;
             background-color: #fccc30;
         }
 
@@ -242,6 +244,7 @@
             font-family: 'Noto Sans KR', sans-serif;
             z-index: 6;
         }
+
         .modal2 {
             display: none;
             margin: auto;
@@ -290,6 +293,13 @@
             cursor: pointer;
         }
 
+        .modal-btn-link,
+        .modal-btn-link:hover {
+            display: block;
+            text-decoration: none;
+            color: #212529;
+        }
+
         .modal-background {
             display: none;
             position: fixed;
@@ -301,51 +311,49 @@
             z-index: 5;
         }
 
+         body > header > div > button.btn.btn-warning {
+            width: 106px;
+        }
+
+        body > header > div > button.btn.btn-warning {
+            color: white;
+        }
+
         body > header > div {
             width: 250px;
             margin-left: 80%;
         }
 
-        body > header > div > button.button.is-success.position {
-            width: 98px;
-        }
-
-        body > header > div > button.button.is-warning {
-            color: white;
-        }
 
     </style>
-
     <script>
-        function cardDelete(event) {
-            let modal = $('#modal1');
-            let modalback = $('#modalback');
-            modalback.css("display", "block");
-            modal.css("display", "flex");
+        function cardDelete(id) {
+            $('#modal1').css("display", "flex");
+            $('#modalback').css("display", "block");
             $('.modal-msg').text('삭제하시겠습니까?');
-            let target = $(event).parent()[0].innerText.split("\n")[6];
-            let temp_html = `<p class="blind">${target}</p>`;
+            let temp_html = `<p class="blind">${id}</p>`;
             $('.modal').append(temp_html);
         }
 
-        function cardDetail(event) {
-            let modal = $('#modal2');
-            let modalback = $('#modalback');
-            modal.css("display", "flex");
-            modalback.css("display", "block");
-            let target = $(event).parent()[0].parentElement.innerText.split("\n")[8];
-            $('.modal-iframe').attr('src', target);
-            console.log("url: ", target);
+        function cardDetail(id, status) {
+            $('#modal2').css("display", "flex");
+            $('#modalback').css("display", "block");
+            if (status == 'completed') {
+                let target = $(`#completed-${id}-url`).val();
+                $('.modal-iframe').attr('src', target);
+                $('#btn-url').attr('href', target);
+            } else {
+                let target = $(`#scheduled-${id}-url`).val();
+                $('.modal-iframe').attr('src', target);
+                $('#btn-url').attr('href', target);
+            }
         }
 
-        function cardDone(event) {
-            let modal = $('#modal1');
-            let modalback = $('#modalback');
-            modalback.css("display", "block");
-            modal.css("display", "flex");
+        function cardDone(id) {
+            $('#modal1').css("display", "flex");
+            $('#modalback').css("display", "block");
             $('.modal-msg').text('완료하시겠습니까?');
-            let target = $(event).parent()[0].innerText.split("\n")[6];
-            let temp_html = `<p class="blind">${target}</p>`;
+            let temp_html = `<p class="blind">${id}</p>`;
             $('.modal').append(temp_html);
         }
 
@@ -377,7 +385,7 @@
                 $('#modalback').hide();
                 window.location.reload();
             }
-            $('.modal-msg').text('');
+            window.location.reload();
         }
 
         function cardHide() {
@@ -387,8 +395,7 @@
         }
 
         function Open_mainpage() {
-            window.location.href = '/mainpage';
-
+            window.location.href = '/mainpage'
         }
 
         function sign_out() {
@@ -397,19 +404,15 @@
             window.location.href = "/"
         }
     </script>
-
 </head>
 <body>
 <header class="main-header">
     <div class="button-box">
-        <button class="button is-success position" onclick="Open_mainpage()">
-            메인페이지
-        </button>
-        <button class="button is-warning" onclick="sign_out()">로그아웃</button>
-    </div>
+            <button type="button" class="btn btn-success" onclick="Open_mainpage()">메인페이지</button>
+            <button type="button" class="btn btn-warning" onclick="sign_out()">로그아웃</button>
+        </div>
     <img class="logo_img" src="../static/logo.png" alt="로고">
 </header>
-
 <section class="mypage">
     <h1 class="mypage-title">
         마이페이지
@@ -425,16 +428,26 @@
                     {% set id = row.volunteer_no %}
                     {% set completion = row.completion %}
                     {% set url = row.href %}
-                    <div class="card">
+                    <div onload="showDeadline({{ id }})" class="card">
                         <div class="card-body">
-                            <h5 onclick="cardDetail(this)" class="card-title">{{ title }}</h5>
+                            <h5 onclick="cardDetail({{ id }}, 'scheduled')" class="card-title">{{ title }}</h5>
                             <p class="card-period">모집기간: {{ period }}</p>
                         </div>
-                        <i onclick="cardDelete(this)" id="heart" class="fas fa-heart"></i>
-                        <p class="card-deadline">마감 <span class="font-red">{{ deadline }}</span>일전</p>
-                        <p class="card-id blind">{{ id }}</p>
-                        <p class="card-url blind">{{ url }}</p>
-                        <button onclick="cardDone(this)" id="completion" class="btn-done">완료하기</button>
+                        <i onclick="cardDelete({{ id }})" id="heart" class="fas fa-heart"></i>
+                        {% if id in deadlines %}
+                            <p id="scheduled-{{ id }}card-deadline" class="card-deadline">
+                                <span class="font-red">오늘 마감</span>
+                            </p>
+                        {% else %}
+                            <p id="scheduled-{{ id }}card-deadline" class="card-deadline">
+                                마감 <span class="font-red">{{ deadline }}</span>일전
+                            </p>
+                        {% endif %}
+                        <input id="scheduled-{{ id }}" type="hidden" class="card-id blind" value="{{ id }}">
+                        <input id="scheduled-{{ id }}-url" type="hidden" class="card-id blind" value="{{ url }}">
+                        <input id="scheduled-{{ id }}-deadline" type="hidden" class="card-id blind"
+                               value="{{ deadline }}">
+                        <button onclick="cardDone({{ id }})" id="completion" class="btn-done">완료하기</button>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -443,7 +456,8 @@
     <hr class="line">
     <article class="volunteer-completed">
         <h2 class="volunteer-title">봉사 완료</h2>
-        <p id="total-hour" class="total-volunteer-hour">총 봉사 시간: <span class="font-yellow">{{ hour }}시간 {{ min }}분</span></p>
+        <p id="total-hour" class="total-volunteer-hour">총 봉사 시간: <span
+                class="font-yellow">{{ hour }}시간 {{ min }}분</span></p>
         <div id="card-box-completed" class="card-container">
             {% for row in rows %}
                 {% if row.completion == 'true' %}
@@ -456,20 +470,19 @@
                     {% set url = row.href %}
                     <div class="card card-completed">
                         <div class="card-body">
-                            <h5 onclick="cardDetail(this)" class="card-title">{{ title }}</h5>
+                            <h5 onclick="cardDetail({{ id }}, 'completed')" class="card-title">{{ title }}</h5>
                             <div class="card-desc">
                                 <p class="card-period">모집기간: {{ period }}</p>
                                 <p class="card-hour">봉사시간: {{ hour }}</p>
                             </div>
                         </div>
-                        <p class="card-id blind">{{ id }}</p>
-                        <p class="card-id blind">{{ url }}</p>
+                        <input id="completed-{{ id }}" type="hidden" class="card-id blind" value="{{ id }}">
+                        <input id="completed-{{ id }}-url" type="hidden" class="card-id blind" value="{{ url }}">
                     </div>
                 {% endif %}
             {% endfor %}
         </div>
     </article>
-
     <div class="modal" id="modal1">
         <p class="modal-msg"></p>
         <div class="modal-btn-container">
@@ -481,22 +494,21 @@
             </div>
         </div>
     </div>
-
     <div class="modal modal2" id="modal2">
         <iframe class="modal-iframe"></iframe>
         <div class="modal-btn-container">
+            <a id="btn-url" class="modal-btn modal-btn-link" target="_blank">
+                <span>사이트로 이동하기</span>
+            </a>
             <div onclick="cardHide()" id="btn-no" class="modal-btn">
                 <span>창닫기</span>
             </div>
         </div>
     </div>
 </section>
-
 <footer class="page-info">
 </footer>
-
-<div id="modalback" class="modal-background">
+<div onclick="cardHide()" id="modalback" class="modal-background">
 </div>
 </body>
-
 </html>
