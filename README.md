@@ -56,11 +56,9 @@
 <br>
 <br>
 
-## 5. 함꼐 해결한 문제 
-마이페이지에서 
-
->+ 로그아웃 버튼 클릭 시 mytoken을 지우지 못하는 현상($.cookie is not a function)이 나타나서 플러그인(<script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>) 추가를 했습니다.
+## 5. 함꼐 해결한 문제  
+>+ 로그아웃 버튼 클릭 시 mytoken을 지우지 못하는 현상($.cookie is not a function)이 나타나서 플러그인(<script type=text/javascript
+            src=https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js></script>) 추가를 했습니다.
 
 >+ 라이브러리 동시 사용 시 html상 이미지, css 깨짐 현상 발생
 원인: Bulma, Bootstrap 라이브러리를 동시에 사용하다 보니  두 기능간 충돌
