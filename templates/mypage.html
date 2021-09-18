@@ -329,6 +329,7 @@
 
     </style>
     <script>
+        // 봉사활동 카드 삭제
         function cardDelete(id) {
             $('#modal1').css("display", "flex");
             $('#modalback').css("display", "block");
@@ -336,7 +337,7 @@
             let temp_html = `<p class="blind">${id}</p>`;
             $('.modal').append(temp_html);
         }
-
+        // 상세페이지 모달
         function cardDetail(id, status) {
             $('#modal2').css("display", "flex");
             $('#modalback').css("display", "block");
@@ -350,7 +351,7 @@
                 $('#btn-url').attr('href', target);
             }
         }
-
+         // 봉사활동 카드 완료
         function cardDone(id) {
             $('#modal1').css("display", "flex");
             $('#modalback').css("display", "block");
@@ -358,7 +359,7 @@
             let temp_html = `<p class="blind">${id}</p>`;
             $('.modal').append(temp_html);
         }
-
+         // 봉사활동 카드 삭제와 완료 모달창에서 '네' 버튼을 입력했을 때
         function cardAnswerYes(event) {
             let id = $(event).parent()[0].parentElement.innerText.split('\n')[5];
             let msg = $(event).parent()[0].parentElement.innerText.split('\n')[0];
@@ -389,17 +390,17 @@
             }
             window.location.reload();
         }
-
+        // 모달창 닫기
         function cardHide() {
             $('#modalback').hide();
             $('.modal').hide();
             $('.modal-msg').text('');
         }
-
+        //메인페이지 이동
         function Open_mainpage() {
             window.location.href = '/mainpage'
         }
-
+        //토큰 제거후 로그인 화면 이동
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
@@ -408,6 +409,7 @@
     </script>
 </head>
 <body>
+
 <header class="main-header">
     <div class="button-box">
             <button type="button" class="btn btn-success" onclick="Open_mainpage()">메인페이지</button>
@@ -415,6 +417,7 @@
         </div>
     <img class="logo_img" src="../static/logo.png" alt="로고">
 </header>
+
 <section class="mypage">
     <h1 class="mypage-title">
         마이페이지
@@ -422,53 +425,72 @@
     <article class="volunteer-scheduled">
         <h2 class="volunteer-title">봉사 예정</h2>
         <div id="card-box-scheduled" class="card-container">
+            {# app.py에서 받아온 봉사활동 데이터를 출력 #}
             {% for row in rows %}
+                {# 봉사완료가 아닌 경우 #}
                 {% if row.completion == 'false' %}
+                    {# 제목 #}
                     {% set title = row.subject %}
+                    {# 기간 #}
                     {% set period = row.recruit_period %}
+                    {# 마감일로부터 남은 날 #}
                     {% set deadline = row.deadline %}
+                    {# 봉사활동 번호 #}
                     {% set id = row.volunteer_no %}
-                    {% set completion = row.completion %}
+                    {# 상세페이지 링크 #}
                     {% set url = row.href %}
-                    <div onload="showDeadline({{ id }})" class="card">
+                    <div class="card">
                         <div class="card-body">
                             <h5 onclick="cardDetail({{ id }}, 'scheduled')" class="card-title">{{ title }}</h5>
                             <p class="card-period">모집기간: {{ period }}</p>
                         </div>
                         <i onclick="cardDelete({{ id }})" id="heart" class="fas fa-heart"></i>
+                        {# 마감일이 당일인 봉사번호들이 담긴 리스트에 현재 id 값이 들어있는 경우 #}
                         {% if id in deadlines %}
                             <p id="scheduled-{{ id }}card-deadline" class="card-deadline">
                                 <span class="font-red">오늘 마감</span>
                             </p>
+                        {# 마감일이 당일인 봉사번호들이 담긴 리스트에 현재 id 값이 들어있지 않을 경우 #}
                         {% else %}
                             <p id="scheduled-{{ id }}card-deadline" class="card-deadline">
                                 마감 <span class="font-red">{{ deadline }}</span>일전
                             </p>
+                        {# if문 끝 #}
                         {% endif %}
-                        <input id="scheduled-{{ id }}" type="hidden" class="card-id blind" value="{{ id }}">
-                        <input id="scheduled-{{ id }}-url" type="hidden" class="card-id blind" value="{{ url }}">
-                        <input id="scheduled-{{ id }}-deadline" type="hidden" class="card-id blind"
+                        <input id="scheduled-{{ id }}" type="hidden" class="blind" value="{{ id }}">
+                        <input id="scheduled-{{ id }}-url" type="hidden" class="blind" value="{{ url }}">
+                        <input id="scheduled-{{ id }}-deadline" type="hidden" class="blind"
                                value="{{ deadline }}">
                         <button onclick="cardDone({{ id }})" id="completion" class="btn-done">완료하기</button>
                     </div>
+                {# if문 끝 #}
                 {% endif %}
+            {# for문 끝 #}
             {% endfor %}
         </div>
     </article>
     <hr class="line">
-    <article class="volunteer-completed">
+   <article class="volunteer-completed">
         <h2 class="volunteer-title">봉사 완료</h2>
         <p id="total-hour" class="total-volunteer-hour">총 봉사 시간: <span
                 class="font-yellow">{{ hour }}시간 {{ min }}분</span></p>
         <div id="card-box-completed" class="card-container">
+            {# app.py에서 받아온 봉사활동 데이터를 출력 #}
             {% for row in rows %}
                 {% if row.completion == 'true' %}
+                    {# 제목 #}
                     {% set title = row.subject %}
+                    {# 모집기간 #}
                     {% set period = row.recruit_period %}
+                    {# 마감일로 부터 남은 날 #}
                     {% set deadline = row.before_deadline %}
+                    {# 봉사번호 #}
                     {% set id = row.volunteer_no %}
+                    {# 완료상태 #}
                     {% set completion = row.completion %}
+                    {# 봉사시간  #}
                     {% set hour = row.hour %}
+                    {# 상세페이지 링크 #}
                     {% set url = row.href %}
                     <div class="card card-completed">
                         <div class="card-body">
@@ -478,13 +500,16 @@
                                 <p class="card-hour">봉사시간: {{ hour }}</p>
                             </div>
                         </div>
-                        <input id="completed-{{ id }}" type="hidden" class="card-id blind" value="{{ id }}">
-                        <input id="completed-{{ id }}-url" type="hidden" class="card-id blind" value="{{ url }}">
+                        <input id="completed-{{ id }}" type="hidden" class="blind" value="{{ id }}">
+                        <input id="completed-{{ id }}-url" type="hidden" class="blind" value="{{ url }}">
                     </div>
+                {# if문 끝 #}
                 {% endif %}
+            {# for문 끝 #}
             {% endfor %}
         </div>
     </article>
+    <!-- 완료, 삭제 모달창 -->
     <div class="modal" id="modal1">
         <p class="modal-msg"></p>
         <div class="modal-btn-container">
@@ -496,6 +521,7 @@
             </div>
         </div>
     </div>
+    <!-- 상세페이지 모달창 -->
     <div class="modal modal2" id="modal2">
         <iframe class="modal-iframe"></iframe>
         <div class="modal-btn-container">
@@ -508,9 +534,11 @@
         </div>
     </div>
 </section>
+
 <footer class="page-info">
 </footer>
-<div onclick="cardHide()" id="modalback" class="modal-background">
-</div>
+<!-- 모달창 뒷배경 -->
+<div onclick="cardHide()" id="modalback" class="modal-background"></div>
+
 </body>
 </html>

@@ -277,7 +277,7 @@
     <script>
         $(document).ready(function () {
         });
-
+        // 좋아요 누를 때 DB에 정보를 저장하고 회색하트->빨간하트 로 변경
         function like(id) {
             let volunteer_no = id;
             let subject = $(`#${id}-title`).text();
@@ -302,7 +302,7 @@
                 }
             })
         }
-
+        // 좋아요를 취소하여 DB에 있는 데이터를 삭제하고 빨간하트->회색하트 변경
         function cancel_like(id) {
             let volunteer_no = id;
 
@@ -320,11 +320,11 @@
                 }
             })
         }
-
+        //메인페이지 이동
         function Open_mypage() {
             window.location.href = '/mypage'
         }
-
+        //토큰 제거후 로그인 화면 이동
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃!')
@@ -366,33 +366,43 @@
     </h1>
     <article class="volunteer-scheduled">
         <div id="card-box-scheduled" class="card-container">
+            {# app.py에서 받아온 봉사 정보 데이터를 출력 #}
             {% for volunteer in volunteers %}
+                {# 아이디 #}
                 {% set id = volunteer.volunteer_no %}
+                {# 제목 #}
                 {% set title = volunteer.subject %}
+                {# 기간 #}
                 {% set period = volunteer.recruit_period %}
+                {# 마감일로부터 남은 날 #}
                 {% set deadline = volunteer.before_deadline %}
+                {# 봉사시간 #}
                 {% set hour = volunteer.hour %}
+                {# 상세페이지 링크 #}
                 {% set url = volunteer.href %}
                 <div class="card">
                     <div class="card-body">
-                        <!-- <h5 id="{{ id }}-title" class="card-title">{{ title }}</h5>-->
                         <h5 id="{{ id }}-title" onclick="cardDetail({{ id }})"  class="card-title">{{ title }}</h5>
                         <p class="card-period">모집기간: <span id="{{ id }}-period">{{ period }}</span></p>
                     </div>
+                    {# 만약 해당 봉사번호를 가지고 있는 봉사 데이터가 DB에 없을 경우 #}
                     {% if id not in nos %}
+                        {# 회색 하트를 보여주기 #}
                         <i id="{{ id }}-heart" class="fas fa-heart gray-heart" onclick="like({{ id }})"></i>
-                    {% else %}
+                    {% else %}  {# 해당 봉사번호를 가지고 있는 봉사 데이터가 DB에 존재하는 경우 #}
+                        {# 빨간 하트를 보여주기 #}
                         <i id="{{ id }}-heart" class="fas fa-heart red-heart" onclick="cancel_like({{ id }})"></i>
-                    {% endif %}
+                    {% endif %}     {# 반복문 끝 #}
                     <p id="{{ id }}-deadline" class="card-deadline">마감 <span class="font-red">{{ deadline }}</span>일전
                     </p>
                     <input type="hidden" class="card-id blind" value="{{ id }}">
                     <input id="{{ id }}-hour" type="hidden" class="card-id blind" value="{{ hour }}">
                     <input id="{{ id }}-href" type="hidden" class="card-id blind" value="{{ url }}">
                 </div>
-            {% endfor %}
+            {% endfor %}    {# 반복문 끝끝#}
         </div>
     </article>
+    <!-- 상세페이지 모달창 -->
     <div class="modal modal2" id="modal2">
         <iframe class="modal-iframe"></iframe>
         <div class="modal-btn-container">
@@ -407,6 +417,7 @@
 </section>
 <footer class="page-info">
 </footer>
+<!-- 모달창 뒷배경 -->
 <div onclick="cardHide()" id="modalback" class="modal-background">
 </div>
 </body>
