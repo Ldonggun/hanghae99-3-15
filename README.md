@@ -62,8 +62,8 @@
 플러그인(<script type=text/javascriptsrc=https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js></script>) 추가를 했습니다.
 
 라이브러리 동시 사용 시 html상 이미지, css 깨짐 현상 발생  
--원인: Bulma, Bootstrap 라이브러리를 동시에 사용하다 보니  두 기능간 충돌  
- 해결: 기존 mainpage, mypage에 Bulma 모달 창 기능 삭제 후  html, css로  구현
+- 원인: Bulma, Bootstrap 라이브러리를 동시에 사용하다 보니  두 기능간 충돌  
+- 해결: 기존 mainpage, mypage에 Bulma 모달 창 기능 삭제 후  html, css로  구현
 
  봉사활동 카드를 어떤 방식을 배치할 수 있을까?
  - CSS에서 flex속성을 이용해서 카드를 배치했다.
