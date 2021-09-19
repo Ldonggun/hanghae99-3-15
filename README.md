@@ -1,6 +1,8 @@
-# 항해99 3기 15조
+# 항해99 3기 15조: '연수구 가치봉사'
 나만의 봉사 활동 page를 관리하고 싶지 않으신가요? 저희 사이트는 인천 연수구 가치 봉사 사이트는 현재 모집중인 봉사활동 리스트와 상세페이지를 제공합니다. Mypage에서 관심있는 봉사활동을 스크랩하고 완료 시간도 체크해 보세요!
-
+<br>
+<br>
+<br>
 
 
 ## 1. 제작 기간 & 팀원
@@ -56,7 +58,7 @@
 <br>
 <br>
 
-## 5. 함꼐 해결한 문제  
+## 5. 함 해결한 문제  
 ### 로그아웃 버튼 클릭 시 mytoken을 지우지 못하는 현상($.cookie is not a function)이 나타남 어떡하지?   
 - 로그인시 브라우저에 토큰이 저장이 된것은 확인을 해서 제거해주는 함수 오류를 검색후
 플러그인(<script type=text/javascriptsrc=https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js></script>) 추가를 했습니다.
